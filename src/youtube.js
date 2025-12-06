@@ -31,8 +31,11 @@ async function fetchLatestVideo(playlistId, topicId) {
 
   const videoOwnerChannelTitle = latestVideo.snippet.videoOwnerChannelTitle;
   const videoOwnerChannelId = latestVideo.snippet.videoOwnerChannelId;
-  const videoPublishedAt = latestVideo.contentDetails.videoPublishedAt;
-  const formattedDate = formatDistanceToNow(parseISO(videoPublishedAt), { addSuffix: true });
+  const videoPublishedAt = latestVideo.contentDetails?.videoPublishedAt;
+  let formattedDate = 'Fecha desconocida';
+    if (videoPublishedAt) {
+    formattedDate = formatDistanceToNow(parseISO(videoPublishedAt), { addSuffix: true });
+    }
 
   const collection = await getCollection();
 
