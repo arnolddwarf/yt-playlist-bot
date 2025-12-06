@@ -4,8 +4,7 @@
   "type": "module",
   "main": "api/webhook.js",
   "scripts": {
-    "dev": "vercel dev",
-    "start": "node api/webhook.js"
+    "dev": "vercel dev"
   },
   "dependencies": {
     "date-fns": "^3.0.0",
