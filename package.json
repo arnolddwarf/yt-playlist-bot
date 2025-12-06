@@ -1,0 +1,16 @@
+{
+  "name": "playlistyt_bot",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "api/webhook.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node api/webhook.js"
+  },
+  "dependencies": {
+    "date-fns": "^3.0.0",
+    "mongodb": "^6.0.0",
+    "node-fetch": "^3.3.2",
+    "telegraf": "^4.16.3"
+  }
+}
