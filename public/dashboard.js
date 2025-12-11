@@ -72,10 +72,12 @@ async function loadDashboard() {
             const published = formatDateShort(item.publishedAt) || 'Desconocido';
 
             const thumbHtml = item.thumbnailUrl
-                ? `<div class="thumb"><img src="${item.thumbnailUrl}" alt="Miniatura" loading="lazy" /></div>`
-                : `<div class="thumb"></div>`;
+  ? `<div class="thumb" data-thumb="${item.thumbnailUrl}">
+       <img src="${item.thumbnailUrl}" alt="Miniatura" loading="lazy" />
+     </div>`
+  : '';
 
-            card.innerHTML = `
+card.innerHTML = `
   <div class="card-inner">
     ${thumbHtml}
     <div class="card-main">
@@ -103,6 +105,7 @@ async function loadDashboard() {
 
 
 
+
             grid.appendChild(card);
         }
 
@@ -120,3 +123,24 @@ async function loadDashboard() {
 document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
 
 loadDashboard();
+
+function setupLightbox() {
+  const backdrop = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+
+  document.body.addEventListener('click', (e) => {
+    const thumb = e.target.closest('.thumb');
+    if (thumb && thumb.dataset.thumb) {
+      img.src = thumb.dataset.thumb;
+      backdrop.classList.add('open');
+    } else if (e.target === backdrop) {
+      backdrop.classList.remove('open');
+      img.src = '';
+    }
+  });
+}
+
+document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
+setupLightbox();
+loadDashboard();
+

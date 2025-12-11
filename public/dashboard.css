@@ -223,10 +223,9 @@ button.refresh:active {
 }
 
 .card-inner {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 12px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .thumb {
@@ -245,7 +244,7 @@ button.refresh:active {
 }
 
 .card-main {
-  min-width: 0;
+  width: 100%;
 }
 
 .playlist-pill {
@@ -374,4 +373,26 @@ button.refresh:active {
     .stats-bar {
         flex-direction: column;
     }
+}
+
+.lightbox-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.lightbox-backdrop.open {
+    display: flex;
+}
+
+.lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.5);
 }
