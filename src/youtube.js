@@ -60,6 +60,7 @@ async function fetchLatestVideo(playlistId, topicId) {
     channelId: videoOwnerChannelId,
     publishedAt: videoPublishedAt,
     url: videoUrl,
+    playlistId,
     reactions: { like: 0, love: 0, angry: 0 },
     userReactions: {}
   });
