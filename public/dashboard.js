@@ -6,6 +6,14 @@ async function loadDashboard() {
     const statVideos = document.querySelector('#stat-videos .stat-value');
     const statReactions = document.querySelector('#stat-reactions .stat-value');
 
+    const PLAYLIST_LABELS = {
+        'PLTKJJiHaMZjeEDrhGz2ae07ArkWm8GbN4': 'Hard Rock / AOR (80s & 90s)',
+        'PLTKJJiHaMZjfOGUN4u96fTmhkPPDM5dQ6': 'Heavy Metal (80s & 90s)',
+        'PLTKJJiHaMZjexSsYWCb4y4eYJPaNgHCIC': 'Thrash Metal (80s & 90s)'
+    };
+
+    const playlistName = PLAYLIST_LABELS[playlistId] || `Playlist ${playlistId.slice(0, 8)}…`;
+
     statusBar.textContent = 'Cargando datos…';
     grid.innerHTML = '';
 
@@ -54,32 +62,36 @@ async function loadDashboard() {
 
             const published = item.publishedAt || 'Desconocido';
 
+            const thumbHtml = item.thumbnailUrl
+                ? `<div class="thumb"><img src="${item.thumbnailUrl}" alt="Miniatura" loading="lazy" /></div>`
+                : `<div class="thumb"></div>`;
+
             card.innerHTML = `
-            <div class="card-inner">
-              <div class="playlist-pill">
-                <span class="dot"></span>
-                <span>${label}</span>
-              </div>
-              <div class="title">${item.title}</div>
-              <div class="meta">
-                Canal: ${item.channelTitle || 'Desconocido'}<br />
-                Publicado: ${published}
-              </div>
-              <div class="reactions">
-                <span>👍 ${like}</span>
-                <span>❤️ ${love}</span>
-                <span>😡 ${angry}</span>
-              </div>
-              <div class="links">
-                <a href="${item.url}" target="_blank" rel="noopener noreferrer">
-                  Ver video
-                </a>
-                <a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer" class="secondary">
-                  Abrir YouTube Studio
-                </a>
-              </div>
-            </div>
-          `;
+  <div class="card-inner">
+    ${thumbHtml}
+    <div class="card-main">
+      <div class="playlist-pill">
+        <span class="dot"></span>
+        <span>${playlistName}</span>
+      </div>
+      <div class="title">${item.title}</div>
+      <div class="meta">
+        ${item.channelTitle || 'Canal desconocido'} · ${published}
+      </div>
+      <div class="reactions">
+        <span>👍 ${like}</span>
+        <span>❤️ ${love}</span>
+        <span>😡 ${angry}</span>
+      </div>
+      <div class="links">
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer">
+          Ver video
+        </a>
+      </div>
+    </div>
+  </div>
+`;
+
 
             grid.appendChild(card);
         }

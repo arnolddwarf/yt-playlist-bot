@@ -223,8 +223,29 @@ button.refresh:active {
 }
 
 .card-inner {
-    position: relative;
-    z-index: 1;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.thumb {
+  width: 120px;
+  height: 68px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #020617;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-main {
+  min-width: 0;
 }
 
 .playlist-pill {
@@ -337,8 +358,12 @@ button.refresh:active {
     }
 
     .shell {
-        padding: 18px 16px 22px;
-        border-radius: 18px;
+        padding: 18px 18px 20px;
+    }
+    
+    .grid {
+        margin-top: 6px;
+        margin-bottom: 8px;
     }
 
     h1 {

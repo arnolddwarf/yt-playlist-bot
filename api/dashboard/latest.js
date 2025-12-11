@@ -27,6 +27,8 @@ export default async function handler(req, res) {
           channelTitle: v.channelTitle,
           publishedAt: v.publishedAt,
           url: v.url,
+          thumbnailUrl: v.thumbnailUrl || null, 
+          playlistId,
           reactions: v.reactions || { like: 0, love: 0, angry: 0 }
         };
       } else {
