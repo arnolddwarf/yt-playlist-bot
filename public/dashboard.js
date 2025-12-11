@@ -87,7 +87,8 @@ card.innerHTML = `
       </div>
       <div class="title">${item.title}</div>
       <div class="meta">
-        ${item.channelTitle || 'Canal desconocido'} · ${published}
+        <span>${item.channelTitle || 'Canal desconocido'}</span>
+        <span class="dot-separator">${published}</span>
       </div>
       <div class="reactions">
         <span>👍 ${like}</span>
@@ -102,6 +103,7 @@ card.innerHTML = `
     </div>
   </div>
 `;
+
 
 
 
@@ -122,7 +124,6 @@ card.innerHTML = `
 
 document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
 
-loadDashboard();
 
 function setupLightbox() {
   const backdrop = document.getElementById('lightbox');
