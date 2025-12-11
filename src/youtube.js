@@ -29,6 +29,8 @@ async function fetchLatestVideo(playlistId, topicId) {
     thumbs.high?.url ||
     thumbs.default?.url;
 
+
+  const thumbnailUrl = videoThumbnail || null;
   const videoOwnerChannelTitle = latestVideo.snippet.videoOwnerChannelTitle;
   const videoOwnerChannelId = latestVideo.snippet.videoOwnerChannelId;
   const videoPublishedAt = latestVideo.contentDetails?.videoPublishedAt;
