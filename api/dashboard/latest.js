@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     for (const [playlistId, topicId] of Object.entries(PLAYLISTS)) {
       const doc = await collection
         .find({ playlistId }) // luego añadiremos este campo al guardar
-        .sort({ publishedAt: -1, _id: -1 })
+        .sort({ _id: -1 })
         .limit(1)
         .toArray();
 
