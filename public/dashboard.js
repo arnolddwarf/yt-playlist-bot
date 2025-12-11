@@ -4,6 +4,18 @@ const PLAYLIST_LABELS = {
         'PLTKJJiHaMZjexSsYWCb4y4eYJPaNgHCIC': 'Thrash Metal (80s & 90s)'
     };
 
+function formatDateShort(iso) {
+  if (!iso) return 'Fecha desconocida';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit'
+  });
+}
+
+
 async function loadDashboard() {
     const grid = document.getElementById('grid');
     const statusBar = document.getElementById('status-bar').querySelector('.value');
@@ -57,7 +69,7 @@ async function loadDashboard() {
             const angry = reactions.angry || 0;
             totalReactions += like + love + angry;
 
-            const published = item.publishedAt || 'Desconocido';
+            const published = formatDateShort(item.publishedAt) || 'Desconocido';
 
             const thumbHtml = item.thumbnailUrl
                 ? `<div class="thumb"><img src="${item.thumbnailUrl}" alt="Miniatura" loading="lazy" /></div>`
@@ -88,6 +100,7 @@ async function loadDashboard() {
     </div>
   </div>
 `;
+
 
 
             grid.appendChild(card);
