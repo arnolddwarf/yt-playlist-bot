@@ -3,72 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <title>YT Playlist Bot – Dashboard</title>
-  <style>
-    body { font-family: system-ui, sans-serif; margin: 20px; background: #0f172a; color: #e5e7eb; }
-    h1 { margin-bottom: 16px; }
-    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .card { background: #020617; border-radius: 8px; padding: 16px; border: 1px solid #1f2937; }
-    .title { font-weight: 600; margin-bottom: 8px; }
-    .meta { font-size: 14px; color: #9ca3af; margin-bottom: 8px; }
-    .reactions { font-size: 14px; margin-bottom: 8px; }
-    .links a { color: #38bdf8; text-decoration: none; margin-right: 8px; font-size: 14px; }
-    .links a:hover { text-decoration: underline; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/dashboard.css" />
 </head>
 <body>
-  <h1>YT Playlist Bot – Dashboard</h1>
-  <p>Último video notificado por playlist.</p>
-
-  <div id="grid" class="grid"></div>
-
-  <script>
-    async function loadDashboard() {
-      const res = await fetch('/api/dashboard/latest');
-      const json = await res.json();
-      const grid = document.getElementById('grid');
-      grid.innerHTML = '';
-
-      if (!json.ok) {
-        grid.textContent = 'Error cargando datos del dashboard';
-        return;
-      }
-
-      const data = json.data || {};
-      for (const [playlistId, item] of Object.entries(data)) {
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        if (!item) {
-          card.innerHTML = `
-            <div class="title">Playlist ${playlistId}</div>
-            <div class="meta">Sin videos registrados aún.</div>
-          `;
-          grid.appendChild(card);
-          continue;
-        }
-
-        const reactions = item.reactions || {};
-        const rText =
-          `👍 ${reactions.like || 0} · ❤️ ${reactions.love || 0} · 😡 ${reactions.angry || 0}`;
-
-        card.innerHTML = `
-          <div class="title">${item.title}</div>
-          <div class="meta">
-            Canal: ${item.channelTitle || 'Desconocido'}<br />
-            Publicado: ${item.publishedAt || 'Desconocido'}<br />
-            Playlist ID: ${playlistId}
+  <div class="shell">
+    <div class="shell-inner">
+      <header>
+        <div>
+          <div class="brand">
+            <span class="logo-dot"></span>
+            <h1>YT Playlist Bot</h1>
           </div>
-          <div class="reactions">${rText}</div>
-          <div class="links">
-            <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
-          </div>
-        `;
+          <div class="subtitle">Resumen en tiempo real de los últimos videos notificados por playlist.</div>
+        </div>
+        <div class="header-actions">
+          <button class="refresh" id="refresh-btn">
+            <span>Actualizar</span>
+            <span>↻</span>
+          </button>
+          <div class="badge">Dashboard interno</div>
+        </div>
+      </header>
 
-        grid.appendChild(card);
-      }
-    }
+      <div class="stats-bar">
+        <div class="stat" id="stat-playlists">
+          <div class="stat-label">Playlists monitoreadas</div>
+          <div class="stat-value">–</div>
+          <div class="stat-sub">Desde este dashboard</div>
+        </div>
+        <div class="stat" id="stat-videos">
+          <div class="stat-label">Videos registrados</div>
+          <div class="stat-value">–</div>
+          <div class="stat-sub">En la base de datos</div>
+        </div>
+        <div class="stat" id="stat-reactions">
+          <div class="stat-label">Reacciones totales</div>
+          <div class="stat-value">–</div>
+          <div class="stat-sub">👍 · ❤️ · 😡</div>
+        </div>
+      </div>
 
-    loadDashboard();
-  </script>
+      <div id="grid" class="grid"></div>
+
+      <div class="status" id="status-bar">
+        <span class="key">Estado:</span>
+        <span class="value">Cargando…</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/dashboard.js"></script>
 </body>
 </html>
