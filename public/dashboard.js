@@ -1,3 +1,8 @@
+const PLAYLIST_LABELS = {
+        'PLTKJJiHaMZjeEDrhGz2ae07ArkWm8GbN4': 'Hard Rock / AOR (80s & 90s)',
+        'PLTKJJiHaMZjfOGUN4u96fTmhkPPDM5dQ6': 'Heavy Metal (80s & 90s)',
+        'PLTKJJiHaMZjexSsYWCb4y4eYJPaNgHCIC': 'Thrash Metal (80s & 90s)'
+    };
 
 async function loadDashboard() {
     const grid = document.getElementById('grid');
@@ -5,14 +10,6 @@ async function loadDashboard() {
     const statPlaylists = document.querySelector('#stat-playlists .stat-value');
     const statVideos = document.querySelector('#stat-videos .stat-value');
     const statReactions = document.querySelector('#stat-reactions .stat-value');
-
-    const PLAYLIST_LABELS = {
-        'PLTKJJiHaMZjeEDrhGz2ae07ArkWm8GbN4': 'Hard Rock / AOR (80s & 90s)',
-        'PLTKJJiHaMZjfOGUN4u96fTmhkPPDM5dQ6': 'Heavy Metal (80s & 90s)',
-        'PLTKJJiHaMZjexSsYWCb4y4eYJPaNgHCIC': 'Thrash Metal (80s & 90s)'
-    };
-
-    const playlistName = PLAYLIST_LABELS[playlistId] || `Playlist ${playlistId.slice(0, 8)}…`;
 
     statusBar.textContent = 'Cargando datos…';
     grid.innerHTML = '';
@@ -37,7 +34,7 @@ async function loadDashboard() {
             const card = document.createElement('div');
             card.className = 'card';
 
-            const label = `Playlist ${playlistId.slice(0, 8)}…`;
+            const playlistName = PLAYLIST_LABELS[playlistId] || `Playlist ${playlistId.slice(0, 8)}…`;
 
             if (!item) {
                 card.innerHTML = `
