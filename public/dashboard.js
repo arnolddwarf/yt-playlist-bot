@@ -123,7 +123,7 @@ async function loadRecentActivity() {
     <li>
       <div class="recent-title">${item.title}</div>
       <div class="recent-meta">
-        <span>${item.playlistName || item.playlistId}</span>
+        <span>${item.PLAYLIST_LABELS || item.playlistId}</span>
         <span>·</span>
         <span>${formatDateShort(item.publishedAt || item.notifiedAt)}</span>
       </div>
@@ -142,23 +142,27 @@ function badge(status) {
 
 async function loadHealth() {
   const res = await fetch('/api/dashboard/health');
-  const h = await res.json();
+  const json = await res.json();
+
+  const h = json.data || {};           // ← sacar el objeto data
+  const services = h.services || {};   // ← evitar undefined
+
   const grid = document.getElementById('health-grid');
   grid.innerHTML = `
     <div class="health-row">
       <span>Último chequeo</span>
-      <span>${formatDateShort(h.lastCheckAt)}</span>
+      <span>${formatDateTimeShort(h.lastCheckAt)}</span>
     </div>
     <div class="health-row">
       <span>Videos nuevos hoy</span>
-      <span>${h.todayVideos}</span>
+      <span>${h.todayVideos ?? '–'}</span>
     </div>
     <div class="health-row">
       <span>Servicios</span>
       <span>
-        YT ${badge(h.services.youtube)}
-        DB ${badge(h.services.mongodb)}
-        TG ${badge(h.services.telegram)}
+        YT ${badge(services.youtube || 'ok')}
+        DB ${badge(services.mongodb || 'ok')}
+        TG ${badge(services.telegram || 'ok')}
       </span>
     </div>
     <div class="health-row">
@@ -167,6 +171,7 @@ async function loadHealth() {
     </div>
   `;
 }
+
 
 document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
 
