@@ -123,7 +123,7 @@ async function loadRecentActivity() {
     <li>
       <div class="recent-title">${item.title}</div>
       <div class="recent-meta">
-        <span>${item.playlistName || item.playlistId}</span>
+        <span>${playlistName}</span>
         <span>·</span>
         <span>${formatDateShort(item.publishedAt || item.notifiedAt)}</span>
       </div>
