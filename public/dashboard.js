@@ -159,10 +159,6 @@ async function loadHealth() {
       <span>${formatDateShort(h.lastCheckAt)}</span>
     </div>
     <div class="health-row">
-      <span>Videos nuevos hoy</span>
-      <span>${h.todayVideos ?? '–'}</span>
-    </div>
-    <div class="health-row">
       <span>Servicios</span>
       <span>
         YT ${badge(services.youtube || 'ok')}
