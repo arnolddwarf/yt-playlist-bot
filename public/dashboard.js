@@ -62,12 +62,7 @@ async function loadDashboard() {
                 continue;
             }
 
-            totalVideos += 1;
-            const reactions = item.reactions || {};
-            const like = reactions.like || 0;
-            const love = reactions.love || 0;
-            const angry = reactions.angry || 0;
-            totalReactions += like + love + angry;
+            
 
             const published = formatDateShort(item.publishedAt) || 'Desconocido';
 
