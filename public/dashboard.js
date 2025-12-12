@@ -21,7 +21,7 @@ async function loadDashboard() {
     const statusBar = document.getElementById('status-bar').querySelector('.value');
     const statPlaylists = document.querySelector('#stat-playlists .stat-value');
     const statVideos = document.querySelector('#stat-videos .stat-value');
-    const statReactions = document.querySelector('#stat-reactions .stat-value');
+    
 
     statusBar.textContent = 'Cargando datos…';
     grid.innerHTML = '';
@@ -39,8 +39,8 @@ async function loadDashboard() {
         const data = json.data || {};
         const entries = Object.entries(data);
 
-        let totalVideos = 0;
-        let totalReactions = 0;
+        const totalPlaylists = entries.length;
+        const totalVideos = entries.filter(([, item]) => !!item).length;
 
         for (const [playlistId, item] of entries) {
             const card = document.createElement('div');
@@ -90,11 +90,6 @@ card.innerHTML = `
         <span>${item.channelTitle || 'Canal desconocido'}</span>
         <span class="dot-separator">${published}</span>
       </div>
-      <div class="reactions">
-        <span>👍 ${like}</span>
-        <span>❤️ ${love}</span>
-        <span>😡 ${angry}</span>
-      </div>
       <div class="links">
         <a href="${item.url}" target="_blank" rel="noopener noreferrer">
           Ver video
@@ -111,9 +106,9 @@ card.innerHTML = `
             grid.appendChild(card);
         }
 
-        statPlaylists.textContent = entries.length.toString();
+        statPlaylists.textContent = totalPlaylists.toString();
         statVideos.textContent = totalVideos.toString();
-        statReactions.textContent = totalReactions.toString();
+        
         statusBar.textContent = 'Actualizado hace unos segundos.';
     } catch (err) {
         console.error(err);

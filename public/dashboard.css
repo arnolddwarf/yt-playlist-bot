@@ -334,22 +334,25 @@ button.refresh:active {
 }
 
 .status {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 14px;
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
+  margin-top: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.status span.key {
-    color: var(--muted);
+.status .key {
+  color: var(--muted);
 }
 
-.status span.value {
-    color: var(--accent);
+.status .value {
+  color: var(--accent);
 }
+
 
 @media (max-width: 640px) {
     body {
