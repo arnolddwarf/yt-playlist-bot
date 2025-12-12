@@ -1,8 +1,8 @@
 const PLAYLIST_LABELS = {
-        'PLTKJJiHaMZjeEDrhGz2ae07ArkWm8GbN4': 'Hard Rock / AOR (80s & 90s)',
-        'PLTKJJiHaMZjfOGUN4u96fTmhkPPDM5dQ6': 'Heavy Metal (80s & 90s)',
-        'PLTKJJiHaMZjexSsYWCb4y4eYJPaNgHCIC': 'Thrash Metal (80s & 90s)'
-    };
+  'PLTKJJiHaMZjeEDrhGz2ae07ArkWm8GbN4': 'Hard Rock / AOR (80s & 90s)',
+  'PLTKJJiHaMZjfOGUN4u96fTmhkPPDM5dQ6': 'Heavy Metal (80s & 90s)',
+  'PLTKJJiHaMZjexSsYWCb4y4eYJPaNgHCIC': 'Thrash Metal (80s & 90s)'
+};
 
 function formatDateShort(iso) {
   if (!iso) return 'Fecha desconocida';
@@ -115,23 +115,26 @@ card.innerHTML = `
 async function loadRecentActivity() {
   const res = await fetch('/api/dashboard/recent');
   const json = await res.json();
-
-  const items = json.data || [];   // aquí sacas el array real
-
-  const playlistName = PLAYLIST_LABELS[playlistId] || `Playlist ${playlistId.slice(0, 8)}…`;
+  const items = json.data || [];
 
   const ul = document.getElementById('recent-list');
-  ul.innerHTML = items.map(item => `
-    <li>
-      <div class="recent-title">${item.title}</div>
-      <div class="recent-meta">
-        <span>${playlistName}</span>
-        <span>·</span>
-        <span>${formatDateShort(item.publishedAt || item.notifiedAt)}</span>
-      </div>
-    </li>
-  `).join('');
+  ul.innerHTML = items.map((item) => {
+    const playlistLabel =
+      PLAYLIST_LABELS[item.playlistId] || item.playlistName || item.playlistId;
+
+    return `
+      <li>
+        <div class="recent-title">${item.title}</div>
+        <div class="recent-meta">
+          <span>${playlistLabel}</span>
+          <span>·</span>
+          <span>${formatDateShort(item.publishedAt || item.notifiedAt)}</span>
+        </div>
+      </li>
+    `;
+  }).join('');
 }
+
 
 
 
