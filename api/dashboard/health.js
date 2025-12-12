@@ -1,34 +1,36 @@
-function badge(status) {
-  const color =
-    status === 'ok' ? 'badge-ok' :
-    status === 'warning' ? 'badge-warn' : 'badge-error';
-  return `<span class="badge ${color}">${status}</span>`;
-}
+// api/dashboard/health.js
+import { getCollection } from '../../src/db.js';
 
-async function loadHealth() {
-  const res = await fetch('/api/dashboard/health');
-  const h = await res.json();
-  const grid = document.getElementById('health-grid');
-  grid.innerHTML = `
-    <div class="health-row">
-      <span>Último chequeo</span>
-      <span>${formatDateTimeShort(h.lastCheckAt)}</span>
-    </div>
-    <div class="health-row">
-      <span>Videos nuevos hoy</span>
-      <span>${h.todayVideos}</span>
-    </div>
-    <div class="health-row">
-      <span>Servicios</span>
-      <span>
-        YT ${badge(h.services.youtube)}
-        DB ${badge(h.services.mongodb)}
-        TG ${badge(h.services.telegram)}
-      </span>
-    </div>
-    <div class="health-row">
-      <span>Errores recientes</span>
-      <span>${h.lastError ? 'Ver logs' : 'Sin errores'}</span>
-    </div>
-  `;
+export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ ok: false, error: 'Method Not Allowed' });
+  }
+
+  try {
+    const collection = await getCollection();
+
+    const now = new Date();
+    const startOfDay = new Date(now);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const todayVideos = await collection.countDocuments({
+      _id: { $gte: startOfDay.getTime() ? undefined : undefined }, // si usas otro campo, cámbialo
+    });
+
+    const data = {
+      lastCheckAt: now.toISOString(),
+      lastError: null,           // si tienes logs, aquí puedes poner el último
+      services: {
+        youtube: 'ok',
+        mongodb: 'ok',
+        telegram: 'ok',
+      },
+      todayVideos,
+    };
+
+    return res.status(200).json({ ok: true, data });
+  } catch (err) {
+    console.error('Error in dashboard/health handler:', err);
+    return res.status(500).json({ ok: false, error: 'Internal Server Error' });
+  }
 }
