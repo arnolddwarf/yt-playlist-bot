@@ -134,4 +134,6 @@ function setupLightbox() {
 document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
 setupLightbox();
 loadDashboard();
+loadRecentActivity();
+loadHealth();
 
