@@ -118,6 +118,8 @@ async function loadRecentActivity() {
 
   const items = json.data || [];   // aquí sacas el array real
 
+  const playlistName = PLAYLIST_LABELS[playlistId] || `Playlist ${playlistId.slice(0, 8)}…`;
+
   const ul = document.getElementById('recent-list');
   ul.innerHTML = items.map(item => `
     <li>
