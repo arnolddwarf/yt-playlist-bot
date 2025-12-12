@@ -20,6 +20,7 @@ export default async function handler(req, res) {
       title: v.title,
       channelTitle: v.channelTitle,
       playlistId: v.playlistId,
+      playlistName: v.playlistName || null,
       publishedAt: v.publishedAt,
       notifiedAt: v.notifiedAt || v.insertedAt || null,
       url: v.url,

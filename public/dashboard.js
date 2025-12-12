@@ -123,7 +123,7 @@ async function loadRecentActivity() {
     <li>
       <div class="recent-title">${item.title}</div>
       <div class="recent-meta">
-        <span>${item.PLAYLIST_LABELS || item.playlistId}</span>
+        <span>${item.playlistName || item.playlistId}</span>
         <span>·</span>
         <span>${formatDateShort(item.publishedAt || item.notifiedAt)}</span>
       </div>
@@ -151,7 +151,7 @@ async function loadHealth() {
   grid.innerHTML = `
     <div class="health-row">
       <span>Último chequeo</span>
-      <span>${formatDateTimeShort(h.lastCheckAt)}</span>
+      <span>${formatDateShort(h.lastCheckAt)}</span>
     </div>
     <div class="health-row">
       <span>Videos nuevos hoy</span>
