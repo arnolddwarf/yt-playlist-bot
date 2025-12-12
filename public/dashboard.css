@@ -406,6 +406,17 @@ button.refresh:active {
   margin-top: 18px;
 }
 
+@media (max-width: 768px) {
+  .bottom-panels {
+    grid-template-columns: 1fr; /* una sola columna en móvil */
+  }
+
+  .panel {
+    width: 100%;
+  }
+}
+
+
 .panel {
   padding: 12px 16px;
   border-radius: 14px;
