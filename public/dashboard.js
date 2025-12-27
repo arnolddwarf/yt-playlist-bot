@@ -16,13 +16,6 @@ function formatDateShort(iso) {
   
 }
 
-<select id="search-field" hidden>
-  <option value="all">Todo</option>
-  <option value="title">Título</option>
-  <option value="channel">Canal</option>
-  <option value="playlist">Playlist</option>
-</select>
-
 const filtersToggle = document.getElementById('filters-toggle');
 const filtersPanel = document.getElementById('search-filters');
 const chipFieldLabel = document.getElementById('chip-field-label');
