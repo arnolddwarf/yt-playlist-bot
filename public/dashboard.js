@@ -15,6 +15,60 @@ function formatDateShort(iso) {
   });
 }
 
+const searchInput = document.getElementById('search-input');
+const searchField = document.getElementById('search-field');
+const searchResults = document.getElementById('search-results');
+
+let searchTimeout;
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  const q = searchInput.value.trim();
+  if (!q) {
+    searchResults.innerHTML = '';
+    return;
+  }
+  searchTimeout = setTimeout(runSearch, 300); // debounce
+});
+
+searchField.addEventListener('change', () => {
+  if (searchInput.value.trim()) runSearch();
+});
+
+async function runSearch() {
+  const q = searchInput.value.trim();
+  const field = searchField.value;
+
+  const res = await fetch(`/api/dashboard/search?q=${encodeURIComponent(q)}&field=${field}`);
+  const json = await res.json();
+  const items = json.data || [];
+
+  searchResults.innerHTML = items.map((item) => {
+    const playlistLabel =
+      PLAYLIST_LABELS[item.playlistId] || item.playlistName || item.playlistId;
+
+    return `
+      <div class="search-card">
+        <div class="search-thumb">
+          ${item.thumbnailUrl
+            ? `<img src="${item.thumbnailUrl}" alt="Miniatura">`
+            : ''}
+        </div>
+        <div class="search-body">
+          <div class="search-title">${item.title}</div>
+          <div class="search-meta">
+            <span>${item.channelTitle}</span>
+            <span>·</span>
+            <span>${playlistLabel}</span>
+          </div>
+          <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+
 
 async function loadDashboard() {
     const grid = document.getElementById('grid');

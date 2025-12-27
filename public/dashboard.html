@@ -38,6 +38,17 @@
           <div class="stat-sub">En la base de datos</div>
         </div>
       </div>
+      <div class="search-bar">
+        <input id="search-input" type="search" placeholder="Buscar por título, canal o playlist..." />
+        <select id="search-field">
+          <option value="all">Todo</option>
+          <option value="title">Título</option>
+          <option value="channel">Canal</option>
+          <option value="playlist">Playlist</option>
+        </select>
+      </div>
+      
+      <div id="search-results" class="search-results"></div>
 
       <div id="grid" class="grid"></div>
 
