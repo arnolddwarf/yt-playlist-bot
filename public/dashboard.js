@@ -15,6 +15,26 @@ function formatDateShort(iso) {
   });
 }
 
+const searchInput = document.getElementById('search-input');
+const searchField = document.getElementById('search-field');
+const searchResults = document.getElementById('search-results');
+
+let searchTimeout;
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  const q = searchInput.value.trim();
+  if (!q) {
+    searchResults.innerHTML = '';
+    return;
+  }
+  searchTimeout = setTimeout(runSearch, 300); // debounce
+});
+
+searchField.addEventListener('change', () => {
+  if (searchInput.value.trim()) runSearch();
+});
+
 async function runSearch() {
   const q = searchInput.value.trim();
   const field = searchField.value;
@@ -46,6 +66,7 @@ async function runSearch() {
     `;
   }).join('');
 }
+
 
 
 
