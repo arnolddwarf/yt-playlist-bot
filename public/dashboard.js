@@ -43,29 +43,27 @@ async function runSearch() {
   const json = await res.json();
   const items = json.data || [];
 
-  searchResults.innerHTML = items.map((item) => {
-    const playlistLabel =
-      PLAYLIST_LABELS[item.playlistId] || item.playlistName || item.playlistId;
+const playlistLabel =
+  PLAYLIST_LABELS[item.playlistId] || item.playlistName || 'Playlist desconocida';
 
-    return `
-      <div class="search-card">
-        <div class="search-thumb">
-          ${item.thumbnailUrl
-            ? `<img src="${item.thumbnailUrl}" alt="Miniatura">`
-            : ''}
-        </div>
-        <div class="search-body">
-          <div class="search-title">${item.title}</div>
-          <div class="search-meta">
-            <span>${item.channelTitle}</span>
-            <span>·</span>
-            <span>${playlistLabel}</span>
-          </div>
-          <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
-        </div>
+searchResults.innerHTML = items.map((item) => `
+  <div class="search-card">
+    <div class="search-thumb">
+      ${item.thumbnailUrl ? `<img src="${item.thumbnailUrl}" alt="">` : ''}
+    </div>
+    <div class="search-body">
+      <div class="search-title">${item.title}</div>
+      <div class="search-meta">
+        <span>${item.channelTitle}</span>
+        <span>${playlistLabel}</span>
       </div>
-    `;
-  }).join('');
+      <div class="search-actions">
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
+      </div>
+    </div>
+  </div>
+`).join('');
+
 }
 
 

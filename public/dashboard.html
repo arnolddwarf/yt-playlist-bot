@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <title>YT Playlist Bot – Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="/dashboard.css" />
 </head>
+
 <body>
   <div class="shell">
     <div class="shell-inner">
@@ -39,15 +41,19 @@
         </div>
       </div>
       <div class="search-bar">
-        <input id="search-input" type="search" placeholder="Buscar por título, canal o playlist..." />
-        <select id="search-field">
-          <option value="all">Todo</option>
-          <option value="title">Título</option>
-          <option value="channel">Canal</option>
-          <option value="playlist">Playlist</option>
-        </select>
+        <span class="search-bar-label">Buscar videos</span>
+        <div class="search-bar-inner">
+          <input id="search-input" type="search" placeholder="Título, canal o playlist..." />
+          <select id="search-field">
+            <option value="all">Todo</option>
+            <option value="title">Título</option>
+            <option value="channel">Canal</option>
+            <option value="playlist">Playlist</option>
+          </select>
+        </div>
       </div>
-      
+
+
       <div id="search-results" class="search-results"></div>
 
       <div id="grid" class="grid"></div>
@@ -64,19 +70,20 @@
       </div>
 
 
-    <div class="status" id="status-bar">
+      <div class="status" id="status-bar">
         <span class="key">Estado</span>
         <span class="value">Cargando…</span>
-    </div>
+      </div>
 
     </div>
   </div>
 
-<div id="lightbox" class="lightbox-backdrop">
+  <div id="lightbox" class="lightbox-backdrop">
     <img id="lightbox-img" class="lightbox-img" src="" alt="Miniatura" />
-</div>
+  </div>
 
 
   <script src="/dashboard.js"></script>
 </body>
+
 </html>
