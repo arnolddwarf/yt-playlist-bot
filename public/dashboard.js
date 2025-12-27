@@ -15,26 +15,6 @@ function formatDateShort(iso) {
   });
 }
 
-const searchInput = document.getElementById('search-input');
-const searchField = document.getElementById('search-field');
-const searchResults = document.getElementById('search-results');
-
-let searchTimeout;
-
-searchInput.addEventListener('input', () => {
-  clearTimeout(searchTimeout);
-  const q = searchInput.value.trim();
-  if (!q) {
-    searchResults.innerHTML = '';
-    return;
-  }
-  searchTimeout = setTimeout(runSearch, 300); // debounce
-});
-
-searchField.addEventListener('change', () => {
-  if (searchInput.value.trim()) runSearch();
-});
-
 async function runSearch() {
   const q = searchInput.value.trim();
   const field = searchField.value;
@@ -43,28 +23,30 @@ async function runSearch() {
   const json = await res.json();
   const items = json.data || [];
 
-const playlistLabel =
-  PLAYLIST_LABELS[item.playlistId] || item.playlistName || 'Playlist desconocida';
+  searchResults.innerHTML = items.map((item) => {
+    const playlistLabel =
+      PLAYLIST_LABELS[item.playlistId] || item.playlistName || 'Playlist desconocida';
 
-searchResults.innerHTML = items.map((item) => `
-  <div class="search-card">
-    <div class="search-thumb">
-      ${item.thumbnailUrl ? `<img src="${item.thumbnailUrl}" alt="">` : ''}
-    </div>
-    <div class="search-body">
-      <div class="search-title">${item.title}</div>
-      <div class="search-meta">
-        <span>${item.channelTitle}</span>
-        <span>${playlistLabel}</span>
+    return `
+      <div class="search-card">
+        <div class="search-thumb">
+          ${item.thumbnailUrl ? `<img src="${item.thumbnailUrl}" alt="">` : ''}
+        </div>
+        <div class="search-body">
+          <div class="search-title">${item.title}</div>
+          <div class="search-meta">
+            <span>${item.channelTitle}</span>
+            <span>${playlistLabel}</span>
+          </div>
+          <div class="search-actions">
+            <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
+          </div>
+        </div>
       </div>
-      <div class="search-actions">
-        <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
-      </div>
-    </div>
-  </div>
-`).join('');
-
+    `;
+  }).join('');
 }
+
 
 
 
