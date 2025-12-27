@@ -64,6 +64,26 @@ searchField.addEventListener('change', () => {
   if (searchInput.value.trim()) runSearch();
 });
 
+const chipsContainer = document.getElementById('search-chips');
+
+chipsContainer.addEventListener('click', (e) => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+
+  const field = btn.dataset.field; // all | title | channel | playlist
+
+  // actualiza el select oculto
+  searchField.value = field;
+
+  // marcar chip activa
+  document.querySelectorAll('.chip').forEach((c) => c.classList.remove('chip-active'));
+  btn.classList.add('chip-active');
+
+  // relanzar búsqueda si hay texto
+  if (searchInput.value.trim()) runSearch();
+});
+
+
 async function runSearch() {
   const q = searchInput.value.trim();
   const field = searchField.value;

@@ -58,11 +58,19 @@
         <option value="playlist">Playlist</option>
       </select>
 
-      <div class="search-filters" id="search-filters">
-        <button class="chip">
-          Campo: <span id="chip-field-label">Todo</span>
+      <div class="search-chips" id="search-chips">
+        <button class="chip chip-active" data-field="all">
+          <span class="chip-dot"></span> Todo
         </button>
-        <!-- si quieres más chips, los añades aquí -->
+        <button class="chip" data-field="title">
+          <span class="chip-dot"></span> Título
+        </button>
+        <button class="chip" data-field="channel">
+          <span class="chip-dot"></span> Canal
+        </button>
+        <button class="chip" data-field="playlist">
+          <span class="chip-dot"></span> Playlist
+        </button>
       </div>
 
 
