@@ -40,17 +40,22 @@
           <div class="stat-sub">En la base de datos</div>
         </div>
       </div>
-      <div class="search-bar">
-        <span class="search-bar-label">Buscar videos</span>
-        <div class="search-bar-inner">
-          <input id="search-input" type="search" placeholder="Título, canal o playlist..." />
-          <select id="search-field">
-            <option value="all">Todo</option>
-            <option value="title">Título</option>
-            <option value="channel">Canal</option>
-            <option value="playlist">Playlist</option>
-          </select>
+      <div class="search-shell">
+        <div class="search-pill">
+          <span class="search-icon">🔍</span>
+          <input id="search-input" type="search" placeholder="Buscar videos..." />
         </div>
+        <button class="search-filters-btn" id="filters-toggle">
+          <span class="filters-icon">☰</span>
+          <span class="filters-label">Filtros</span>
+        </button>
+      </div>
+
+      <div class="search-filters" id="search-filters">
+        <button class="chip">
+          Campo: <span id="chip-field-label">Todo</span>
+        </button>
+        <!-- si quieres más chips, los añades aquí -->
       </div>
 
 

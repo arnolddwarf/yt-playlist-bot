@@ -13,10 +13,46 @@ function formatDateShort(iso) {
     month: 'short',
     day: '2-digit'
   });
+  
 }
 
-const searchInput = document.getElementById('search-input');
+<select id="search-field" hidden>
+  <option value="all">Todo</option>
+  <option value="title">Título</option>
+  <option value="channel">Canal</option>
+  <option value="playlist">Playlist</option>
+</select>
+
+const filtersToggle = document.getElementById('filters-toggle');
+const filtersPanel = document.getElementById('search-filters');
+const chipFieldLabel = document.getElementById('chip-field-label');
 const searchField = document.getElementById('search-field');
+
+filtersToggle.addEventListener('click', () => {
+  filtersPanel.classList.toggle('active');
+});
+
+// ciclo simple de campo al hacer click en la chip
+const fieldOptions = ['all', 'title', 'channel', 'playlist'];
+const fieldLabels = {
+  all: 'Todo',
+  title: 'Título',
+  channel: 'Canal',
+  playlist: 'Playlist',
+};
+
+document.querySelector('.chip').addEventListener('click', () => {
+  const current = searchField.value;
+  const idx = fieldOptions.indexOf(current);
+  const next = fieldOptions[(idx + 1) % fieldOptions.length];
+  searchField.value = next;
+  chipFieldLabel.textContent = fieldLabels[next];
+  if (searchInput.value.trim()) runSearch();
+});
+
+
+const searchInput = document.getElementById('search-input');
+//const searchField = document.getElementById('search-field');
 const searchResults = document.getElementById('search-results');
 
 let searchTimeout;

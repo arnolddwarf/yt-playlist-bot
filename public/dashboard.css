@@ -579,3 +579,71 @@ button.refresh:active {
 .search-actions a {
   font-size: 11px;
 }
+
+.search-shell {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.search-icon {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.search-pill input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.search-pill input:focus {
+  outline: none;
+}
+
+.search-filters-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.7);
+  background: rgba(15, 23, 42, 0.95);
+  color: #bfdbfe;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.search-filters {
+  margin-top: 8px;
+  display: none; /* se muestra al pulsar "Filtros" */
+  gap: 8px;
+}
+
+.search-filters.active {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  font-size: 12px;
+}
