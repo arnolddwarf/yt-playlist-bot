@@ -675,3 +675,13 @@ button.refresh:active {
   background: #bfdbfe;
 }
 
+.search-chips {
+  margin-top: 8px;
+  display: none;            /* oculto por defecto */
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.search-chips.active {
+  display: flex;            /* se muestra cuando tiene .active */
+}

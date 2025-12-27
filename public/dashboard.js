@@ -16,7 +16,7 @@ function formatDateShort(iso) {
   
 }
 
-const filtersToggle = document.getElementById('filters-toggle');
+//const filtersToggle = document.getElementById('filters-toggle');
 const filtersPanel = document.getElementById('search-filters');
 const chipFieldLabel = document.getElementById('chip-field-label');
 const searchField = document.getElementById('search-field');
@@ -45,6 +45,14 @@ document.querySelector('.chip').addEventListener('click', () => {
 
 
 const searchInput = document.getElementById('search-input');
+
+const filtersToggle = document.getElementById('filters-toggle');
+const chipsContainer = document.getElementById('search-chips');
+
+filtersToggle.addEventListener('click', () => {
+  chipsContainer.classList.toggle('active');
+});
+
 //const searchField = document.getElementById('search-field');
 const searchResults = document.getElementById('search-results');
 
@@ -64,7 +72,7 @@ searchField.addEventListener('change', () => {
   if (searchInput.value.trim()) runSearch();
 });
 
-const chipsContainer = document.getElementById('search-chips');
+//const chipsContainer = document.getElementById('search-chips');
 
 chipsContainer.addEventListener('click', (e) => {
   const btn = e.target.closest('.chip');
