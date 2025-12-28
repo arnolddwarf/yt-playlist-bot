@@ -84,33 +84,17 @@ async function runSearch() {
   const q = searchInput.value.trim();
   const field = searchField.value;
 
+  if (!q) {
+    // si no hay búsqueda, recarga las playlists originales
+    loadDashboard();
+    return;
+  }
+
   const res = await fetch(`/api/dashboard/search?q=${encodeURIComponent(q)}&field=${field}`);
   const json = await res.json();
-  const items = json.data || [];
-
-  searchResults.innerHTML = items.map((item) => {
-    const playlistLabel =
-      PLAYLIST_LABELS[item.playlistId] || item.playlistName || 'Playlist desconocida';
-
-    return `
-      <div class="search-card">
-        <div class="search-thumb">
-          ${item.thumbnailUrl ? `<img src="${item.thumbnailUrl}" alt="">` : ''}
-        </div>
-        <div class="search-body">
-          <div class="search-title">${item.title}</div>
-          <div class="search-meta">
-            <span>${item.channelTitle}</span>
-            <span>${playlistLabel}</span>
-          </div>
-          <div class="search-actions">
-            <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+  renderVideos(json.data || [], true); // true = es búsqueda
 }
+
 
 
 
@@ -124,7 +108,7 @@ async function loadDashboard() {
     
 
     statusBar.textContent = 'Cargando datos…';
-    grid.innerHTML = '';
+    renderVideos(Object.values(results).filter(Boolean), false);
 
     try {
         const res = await fetch('/api/dashboard/latest');
@@ -271,6 +255,49 @@ async function loadHealth() {
       <span>${h.lastError ? 'Ver logs' : 'Sin errores'}</span>
     </div>
   `;
+}
+
+async function renderVideos(items, isSearch = false) {
+  const grid = document.getElementById('grid');
+  
+  if (items.length === 0) {
+    grid.innerHTML = isSearch 
+      ? '<div class="no-results">No se encontraron videos</div>'
+      : ''; // si no es búsqueda, deja vacío para cargar playlists
+    return;
+  }
+
+  grid.innerHTML = items.map((item) => {
+    const playlistLabel = PLAYLIST_LABELS[item.playlistId] || item.playlistName || 'Playlist desconocida';
+    
+    return `
+      <div class="card" data-video-id="${item._id || ''}">
+        <div class="card-inner">
+          ${item.thumbnailUrl ? `
+            <div class="thumb" data-thumb="${item.thumbnailUrl}">
+              <img src="${item.thumbnailUrl}" alt="Miniatura" loading="lazy" />
+            </div>
+          ` : ''}
+          <div class="card-main">
+            ${isSearch ? `
+              <div class="playlist-pill">
+                <span class="dot"></span>
+                <span>${playlistLabel}</span>
+              </div>
+            ` : ''}
+            <div class="title">${item.title}</div>
+            <div class="meta">
+              <span>${item.channelTitle || 'Canal desconocido'}</span>
+              <span class="dot-separator">${formatDateShort(item.publishedAt)}</span>
+            </div>
+            <div class="links">
+              <a href="${item.url}" target="_blank" rel="noopener noreferrer">Ver video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 
