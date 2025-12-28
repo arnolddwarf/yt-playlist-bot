@@ -16,6 +16,10 @@ function formatDateShort(iso) {
   
 }
 
+//const filtersToggle = document.getElementById('filters-toggle');
+const filtersPanel = document.getElementById('search-filters');
+const chipFieldLabel = document.getElementById('chip-field-label');
+const searchField = document.getElementById('search-field');
 
 
 document.querySelector('.chip').addEventListener('click', () => {
