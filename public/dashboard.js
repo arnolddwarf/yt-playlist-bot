@@ -16,23 +16,7 @@ function formatDateShort(iso) {
   
 }
 
-//const filtersToggle = document.getElementById('filters-toggle');
-const filtersPanel = document.getElementById('search-filters');
-const chipFieldLabel = document.getElementById('chip-field-label');
-const searchField = document.getElementById('search-field');
 
-filtersToggle.addEventListener('click', () => {
-  filtersPanel.classList.toggle('active');
-});
-
-// ciclo simple de campo al hacer click en la chip
-const fieldOptions = ['all', 'title', 'channel', 'playlist'];
-const fieldLabels = {
-  all: 'Todo',
-  title: 'Título',
-  channel: 'Canal',
-  playlist: 'Playlist',
-};
 
 document.querySelector('.chip').addEventListener('click', () => {
   const current = searchField.value;
