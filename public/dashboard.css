@@ -685,3 +685,19 @@ button.refresh:active {
 .search-chips.active {
   display: flex;            /* se muestra cuando tiene .active */
 }
+
+
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+#grid.search-single {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+  margin: 0 auto;
+}

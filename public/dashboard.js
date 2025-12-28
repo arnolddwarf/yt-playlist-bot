@@ -49,11 +49,15 @@ let searchTimeout;
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimeout);
   const q = searchInput.value.trim();
-  if (!q) {
-    searchResults.innerHTML = '';
-    return;
-  }
-  searchTimeout = setTimeout(runSearch, 300); // debounce
+  
+  searchTimeout = setTimeout(() => {
+    if (!q) {
+      // ← SI SE VACÍA, RECARGA PLAYLISTS
+      loadDashboard();
+    } else {
+      runSearch();
+    }
+  }, 300);
 });
 
 searchField.addEventListener('change', () => {
@@ -221,10 +225,13 @@ async function loadHealth() {
 async function renderVideos(items, isSearch = false) {
   const grid = document.getElementById('grid');
   
-  if (items.length === 0) {
-    grid.innerHTML = isSearch 
-      ? '<div class="no-results">No se encontraron videos</div>'
-      : ''; // si no es búsqueda, deja vacío para cargar playlists
+  if (items.length === 0 && !isSearch) {
+    grid.innerHTML = ''; // playlists vacías
+    return;
+  }
+  
+  if (items.length === 0 && isSearch) {
+    grid.innerHTML = '<div class="no-results">No se encontraron videos</div>';
     return;
   }
 
@@ -232,7 +239,7 @@ async function renderVideos(items, isSearch = false) {
     const playlistLabel = PLAYLIST_LABELS[item.playlistId] || item.playlistName || 'Playlist desconocida';
     
     return `
-      <div class="card" data-video-id="${item._id || ''}">
+      <div class="card">
         <div class="card-inner">
           ${item.thumbnailUrl ? `
             <div class="thumb" data-thumb="${item.thumbnailUrl}">
@@ -259,7 +266,15 @@ async function renderVideos(items, isSearch = false) {
       </div>
     `;
   }).join('');
+  
+  // Para 1 resultado, centra y agranda
+  if (items.length === 1 && isSearch) {
+    grid.classList.add('search-single');
+  } else {
+    grid.classList.remove('search-single');
+  }
 }
+
 
 
 document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
