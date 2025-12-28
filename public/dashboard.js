@@ -101,100 +101,61 @@ async function runSearch() {
 
 
 async function loadDashboard() {
-    const grid = document.getElementById('grid');
-    const statusBar = document.getElementById('status-bar').querySelector('.value');
-    const statPlaylists = document.querySelector('#stat-playlists .stat-value');
-    const statVideos = document.querySelector('#stat-videos .stat-value');
-    
+  const grid = document.getElementById('grid');
+  const statusBar = document.getElementById('status-bar').querySelector('.value');
+  const statPlaylists = document.querySelector('#stat-playlists .stat-value');
+  const statVideos = document.querySelector('#stat-videos .stat-value');
 
-    statusBar.textContent = 'Cargando datos…';
-    grid.innerHTML = renderVideos(Object.values(results).filter(Boolean), false);
+  statusBar.textContent = 'Cargando datos…';
 
-    try {
-        const res = await fetch('/api/dashboard/latest');
-        const json = await res.json();
+  try {
+    const res = await fetch('/api/dashboard/latest');
+    const json = await res.json();
 
-        if (!json.ok) {
-            statusBar.textContent = 'Error cargando datos del dashboard.';
-            grid.innerHTML = '<div class="empty">No se pudo cargar la información.</div>';
-            return;
-        }
-
-        const data = json.data || {};
-        const entries = Object.entries(data);
-
-        const totalPlaylists = entries.length;
-        const totalVideos = entries.filter(([, item]) => !!item).length;
-
-        for (const [playlistId, item] of entries) {
-            const card = document.createElement('div');
-            card.className = 'card';
-
-            const playlistName = PLAYLIST_LABELS[playlistId] || `Playlist ${playlistId.slice(0, 8)}…`;
-
-            if (!item) {
-                card.innerHTML = `
-              <div class="card-inner">
-                <div class="playlist-pill">
-                  <span class="dot"></span>
-                  <span>${label}</span>
-                </div>
-                <div class="empty">Sin videos registrados aún para esta playlist.</div>
-              </div>
-            `;
-                grid.appendChild(card);
-                continue;
-            }
-
-            
-
-            const published = formatDateShort(item.publishedAt) || 'Desconocido';
-
-            const thumbHtml = item.thumbnailUrl
-  ? `<div class="thumb" data-thumb="${item.thumbnailUrl}">
-       <img src="${item.thumbnailUrl}" alt="Miniatura" loading="lazy" />
-     </div>`
-  : '';
-
-card.innerHTML = `
-  <div class="card-inner">
-    ${thumbHtml}
-    <div class="card-main">
-      <div class="playlist-pill">
-        <span class="dot"></span>
-        <span>${playlistName}</span>
-      </div>
-      <div class="title">${item.title}</div>
-      <div class="meta">
-        <span>${item.channelTitle || 'Canal desconocido'}</span>
-        <span class="dot-separator">${published}</span>
-      </div>
-      <div class="links">
-        <a href="${item.url}" target="_blank" rel="noopener noreferrer">
-          Ver video
-        </a>
-      </div>
-    </div>
-  </div>
-`;
-
-
-
-
-
-            grid.appendChild(card);
-        }
-
-        statPlaylists.textContent = totalPlaylists.toString();
-        statVideos.textContent = totalVideos.toString();
-        
-        statusBar.textContent = 'Actualizado hace unos segundos.';
-    } catch (err) {
-        console.error(err);
-        statusBar.textContent = 'Error de red al cargar el dashboard.';
-        grid.innerHTML = '<div class="empty">Revisa la consola de Vercel o del navegador para más detalles.</div>';
+    if (!json.ok) {
+      statusBar.textContent = 'Error cargando datos del dashboard.';
+      grid.innerHTML = '<div class="empty">No se pudo cargar la información.</div>';
+      return;
     }
+
+    const data = json.data || {};
+    const entries = Object.entries(data);
+
+    const totalPlaylists = entries.length;
+    const totalVideos = entries.filter(([, item]) => !!item).length;
+
+    // ← AQUÍ va renderVideos DESPUÉS del fetch
+    const videoItems = entries
+      .filter(([, item]) => !!item)
+      .map(([playlistId, item]) => ({
+        title: item.title,
+        channelTitle: item.channelTitle,
+        publishedAt: item.publishedAt,
+        url: item.url,
+        thumbnailUrl: item.thumbnailUrl || null,
+        playlistId
+      }));
+
+    renderVideos(videoItems, false);  // ← CAMBIO AQUÍ
+
+    // Maneja playlists vacías también con renderVideos
+    const emptyPlaylists = entries.filter(([, item]) => !item);
+    if (emptyPlaylists.length > 0) {
+      // puedes mostrarlas también o ignorarlas
+      console.log(`${emptyPlaylists.length} playlists sin videos`);
+    }
+
+    statPlaylists.textContent = totalPlaylists.toString();
+    statVideos.textContent = totalVideos.toString();
+    
+    statusBar.textContent = 'Actualizado hace unos segundos.';
+  } catch (err) {
+    console.error(err);
+    statusBar.textContent = 'Error de red al cargar el dashboard.';
+    grid.innerHTML = '<div class="empty">Revisa la consola de Vercel o del navegador para más detalles.</div>';
+  }
 }
+
 
 async function loadRecentActivity() {
   const res = await fetch('/api/dashboard/recent');
