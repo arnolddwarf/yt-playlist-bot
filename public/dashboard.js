@@ -108,7 +108,7 @@ async function loadDashboard() {
     
 
     statusBar.textContent = 'Cargando datos…';
-    renderVideos(Object.values(results).filter(Boolean), false);
+    grid.innerHTML = renderVideos(Object.values(results).filter(Boolean), false);
 
     try {
         const res = await fetch('/api/dashboard/latest');
