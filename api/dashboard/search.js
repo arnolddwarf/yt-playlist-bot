@@ -6,14 +6,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Method Not Allowed' });
   }
 
-  const { q = '', field = 'all' } = req.query;
+  const { q = '', field = 'all', limit = 50, page = 1 } = req.query;
   if (!q.trim()) {
     return res.status(200).json({ ok: true, data: [] });
   }
 
   try {
     const collection = await getCollection();
-
     const regex = new RegExp(q.trim(), 'i');
     const or = [];
 
@@ -27,10 +26,14 @@ export default async function handler(req, res) {
       or.push({ playlistId: regex });
     }
 
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const total = await collection.countDocuments(or.length ? { $or: or } : {});
+
     const docs = await collection
       .find(or.length ? { $or: or } : {})
       .sort({ publishedAt: -1 })
-      .limit(20)
+      .skip(skip)
+      .limit(parseInt(limit))
       .toArray();
 
     const data = docs.map((v) => ({
@@ -43,7 +46,16 @@ export default async function handler(req, res) {
       thumbnailUrl: v.thumbnailUrl || null,
     }));
 
-    return res.status(200).json({ ok: true, data });
+    return res.status(200).json({ 
+      ok: true, 
+      data,
+      pagination: {
+        total,
+        pages: Math.ceil(total / parseInt(limit)),
+        current: parseInt(page),
+        limit: parseInt(limit)
+      }
+    });
   } catch (err) {
     console.error('Error in dashboard/search handler:', err);
     return res.status(500).json({ ok: false, error: 'Internal Server Error' });
